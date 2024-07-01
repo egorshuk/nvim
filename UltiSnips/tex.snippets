@@ -120,12 +120,20 @@ ${1:${VISUAL}}
 .\] $0
 endsnippet
 
-snippet ali "Align" bA
-\begin{align*}
-	${1:${VISUAL}}
-.\end{align*}
+snippet con "conclusion from the equation's" bA
+\begin{equation}
+	\left.\begin{aligned}
+		${1:${VISUAL}}
+	\end{aligned}\right| \implies $2
+\end{equation}
+$0
 endsnippet
 
+snippet equation "equation" bA
+\begin{equation}
+	${1:${VISUAL}}
+.\end{equation} $0
+endsnippet
 
 context "math()"
 snippet // "Fraction" iA
@@ -337,7 +345,7 @@ snippet EE "geq" iA
 endsnippet
 
 context "math()"
-snippet AA "forall" iA
+snippet fA "forall" iA
 \forall 
 endsnippet
 
@@ -562,7 +570,11 @@ snippet ZZ "Z" iA
 endsnippet
 
 snippet ang "angle" wA
-\angle
+\angle $0
+endsnippet
+
+snippet tri "triangle" wA
+\triangle $0
 endsnippet
 
 snippet <! "normal" iA
