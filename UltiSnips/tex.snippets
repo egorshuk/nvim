@@ -11,7 +11,7 @@ def env(name):
 
 endglobal
 snippet template "Basic template" b
-\documentclass[a4paper]{article}
+\documentclass[12pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T2A]{fontenc}
@@ -19,11 +19,13 @@ snippet template "Basic template" b
 \usepackage{amsmath, amssymb, amsfonts, amsthm}
 \usepackage{import}
 \usepackage{enumerate}
-\usepakage[
+\usepackage[
+	a4paper,
 	colorlinks=true,
 	linkcolor=red,
 	urlcolor=blue,
-	pfdtitle={template}
+	pdfauthor={Lunev Egor},
+	pdftitle={template}
 ]{hyperref}
 
 \usepackage[
@@ -82,10 +84,8 @@ snippet item "Itemize" bA
 \end{itemize}
 endsnippet
 
-snippet desc "Description" b
-\begin{description}
-	\item[$1] $0
-\end{description}
+snippet emph "emphasis" Ai
+\emph{${1:${VISUAL}}} $0
 endsnippet
 
 snippet pac "Package" b
@@ -166,6 +166,11 @@ snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
 endsnippet
 
 context "math()"
+snippet binom "Binom" iA
+\binom{$1}{$2}$0
+endsnippet
+
+context "math()"
 snippet '([A-Za-z])(\d)' "auto subscript" wrA
 `!p snip.rv = match.group(1)`_`!p snip.rv = match.group(2)`
 endsnippet
@@ -212,6 +217,14 @@ endsnippet
 
 snippet != "equals" iA
 \neq 
+endsnippet
+
+snippet +- "plus minus" iA
+\pm
+endsnippet
+
+snippet -+ "minus plus" iA
+\mp
 endsnippet
 
 context "math()"
@@ -271,7 +284,7 @@ snippet conj "conjugate" iA
 endsnippet
 
 snippet sum "sum" w
-\sum_{n=${1:1}}^{${2:\infty}} ${3:a_n z^n}
+\sum_{${1:i=1}}^{${2:n}} $3
 endsnippet
 
 snippet taylor "taylor" w
@@ -294,9 +307,16 @@ snippet part "d/dx" w
 \frac{\partial ${1:V}}{\partial ${2:x}} $0
 endsnippet
 
+
+
 context "math()"
 snippet sq "\sqrt{}" iA
 \sqrt{${1:${VISUAL}}} $0
+endsnippet
+
+context "math()"
+snippet der "derivative" w
+\frac{\mathrm d${1:f}}{\mathrm d${2:x}} $0
 endsnippet
 
 context "math()"
@@ -307,6 +327,16 @@ endsnippet
 context "math()"
 snippet cb "^3" iA
 ^3
+endsnippet
+
+context "math()"
+snippet inv "^{-1}" iA
+^{-1}
+endsnippet
+
+context "math()"
+snippet transpose "martix transpose" iA
+^{\intercal}
 endsnippet
 
 context "math()"
@@ -328,11 +358,11 @@ snippet ooo "\infty" iA
 endsnippet
 
 snippet rij "mrij" i
-(${1:x}_${2:n})_{${3:$2}\\in${4:\\N}}$0
+(${1:x}_${2:n})_{${3:$2}\\in${4:\mathbb N}}$0
 endsnippet
 
 snippet <= "leq" iA
-\leqlant 
+\leqslant 
 endsnippet
 
 snippet >= "geq" iA
@@ -345,7 +375,7 @@ snippet EE "geq" iA
 endsnippet
 
 context "math()"
-snippet fA "forall" iA
+snippet fa "forall" iA
 \forall 
 endsnippet
 
@@ -390,10 +420,6 @@ snippet xmm "x" iA
 x_{m}
 endsnippet
 
-snippet R0+ "R0+" iA
-\\R_0^+
-endsnippet
-
 snippet plot "Plot" w
 \begin{figure}[$1]
 	\centering
@@ -417,17 +443,8 @@ $0
 endsnippet
 
 context "math()"
-snippet mcal "mathcal" iA
+snippet cal "mathcal" wA
 \mathcal{$1}$0
-endsnippet
-
-snippet lll "l" iA
-\ell
-endsnippet
-
-context "math()"
-snippet nabl "nabla" iA
-\nabla 
 endsnippet
 
 context "math()"
@@ -447,7 +464,7 @@ endsnippet
 
 priority 100
 context "math()"
-snippet '(?<!\\)(sin|cos|arccot|cot|csc|ln|log|exp|star|perp)' "ln" rwA
+snippet '(?<!\\)(sin|cos|arccot|cot|csc|ln|log|exp|star|perp|det|sup)' "ln" rwA
 \\`!p snip.rv = match.group(1)`
 endsnippet
 
@@ -457,9 +474,14 @@ snippet dint "integral" wA
 \int_{${1:-\infty}}^{${2:\infty}} ${3:${VISUAL}} $0
 endsnippet
 
+context "math()"
+snippet dx "dx" iA
+\mathrm{d}${1:x} 
+endsnippet
+
 priority 200
 context "math()"
-snippet '(?<!\\)(arcsin|arccos|arctan|arccot|arccsc|arcsec|pi|zeta|int)' "ln" rwA
+snippet '(?<!\\)(arcsin|arccos|arctan|arccot|arccsc|arcsec|pi|zeta|hbar)' "ln" rwA
 \\`!p snip.rv = match.group(1)`
 endsnippet
 
@@ -514,17 +536,13 @@ snippet set "set" wA
 \\{$1\\} $0
 endsnippet
 
-snippet || "mid" iA
- \mid 
-endsnippet
-
 
 context "math()"
 snippet cc "subset" Ai
-\subset 
+\subset$1 $0 
 endsnippet
 
-snippet notin "not in " iA
+snippet !inn "not in " iA
 \not\in 
 endsnippet
 
@@ -534,39 +552,51 @@ snippet inn "in " iA
 endsnippet
 
 snippet NN "n" iA
-\N
+\mathbb N
 endsnippet
 
-snippet Nn "cap" iA
+snippet nn "cap" iA
 \cap 
 endsnippet
 
-snippet UU "cup" iA
+snippet uu "cup" iA
 \cup 
 endsnippet
 
-snippet uuu "bigcup" iA
+snippet Uu "bigcup" iA
 \bigcup_{${1:i \in ${2: I}}} $0
 endsnippet
 
-snippet nnn "bigcap" iA
+snippet Nn "bigcap" iA
 \bigcap_{${1:i \in ${2: I}}} $0
 endsnippet
 
 snippet OO "emptyset" iA
-\O
+\varnothing
 endsnippet
 
 snippet RR "real" iA
-\R
+\mathbb R
 endsnippet
 
 snippet QQ "Q" iA
-\Q
+\mathbb Q
 endsnippet
 
 snippet ZZ "Z" iA
-\Z
+\mathbb Z
+endsnippet
+
+snippet bb "mathbb" wA
+\mathbb{$1} $0
+endsnippet
+
+snippet bf "mathbf" wA
+\mathbf{$1} $0
+endsnippet
+
+snippet rm "mathrm" wA
+\mathrm{$1} $0
 endsnippet
 
 snippet ang "angle" wA
@@ -597,7 +627,7 @@ snippet tt "text" iA
 endsnippet
 
 context "math()"
-snippet case "cases" wA
+snippet cases "cases" wA
 \begin{cases}
 	$1
 \end{cases}
@@ -646,13 +676,5 @@ snippet letw "let omega" iA
 Let $\Omega \subset \C$ be open.
 endsnippet
 
-
-snippet HH "H" iA
-\mathbb{H}
-endsnippet
-
-snippet DD "D" iA
-\mathbb{D}
-endsnippet
 
 # vim:ft=snippets
