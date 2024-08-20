@@ -196,21 +196,6 @@ snip.rv = eval('latex(' + match.group(1).replace('\\', '').replace('^', '**').re
 `
 endsnippet
 
-priority 1000
-snippet math "mathematicablock" w
-math $1 math$0
-endsnippet
-
-priority 10000
-snippet 'math(.*)math' "math" wr
-`!p
-import subprocess
-code = match.group(1)
-code = 'ToString[' + code + ', TeXForm]'
-snip.rv = subprocess.check_output(['wolframscript', '-code', code])
-`
-endsnippet
-
 snippet == "equals" iA
 &= $1 \\\\
 endsnippet
@@ -307,16 +292,14 @@ snippet part "d/dx" w
 \frac{\partial ${1:V}}{\partial ${2:x}} $0
 endsnippet
 
-
+context "math()"
+snippet der "derivative" w
+\frac{\mathrm d${1:f}}{\mathrm d${2:x}} $0
+endsnippet
 
 context "math()"
 snippet sq "\sqrt{}" iA
 \sqrt{${1:${VISUAL}}} $0
-endsnippet
-
-context "math()"
-snippet der "derivative" w
-\frac{\mathrm d${1:f}}{\mathrm d${2:x}} $0
 endsnippet
 
 context "math()"
@@ -330,23 +313,8 @@ snippet cb "^3" iA
 endsnippet
 
 context "math()"
-snippet inv "^{-1}" iA
-^{-1}
-endsnippet
-
-context "math()"
-snippet transpose "martix transpose" iA
-^{\intercal}
-endsnippet
-
-context "math()"
 snippet td "to the ... power" iA
 ^{$1}$0
-endsnippet
-
-context "math()"
-snippet rd "to the ... power" iA
-^{($1)}$0
 endsnippet
 
 snippet __ "subscript" iA
@@ -355,10 +323,6 @@ endsnippet
 
 snippet ooo "\infty" iA
 \infty
-endsnippet
-
-snippet rij "mrij" i
-(${1:x}_${2:n})_{${3:$2}\\in${4:\mathbb N}}$0
 endsnippet
 
 snippet <= "leq" iA
@@ -370,7 +334,7 @@ snippet >= "geq" iA
 endsnippet
 
 context "math()"
-snippet EE "geq" iA
+snippet EE "exists" iA
 \exists 
 endsnippet
 
@@ -388,7 +352,6 @@ context "math()"
 snippet ynn "yn" iA
 y_{n}
 endsnippet
-
 
 context "math()"
 snippet xii "xi" iA
@@ -415,13 +378,8 @@ snippet xp1 "x" iA
 x_{n+1}
 endsnippet
 
-context "math()"
-snippet xmm "x" iA
-x_{m}
-endsnippet
-
 snippet plot "Plot" w
-\begin{figure}[$1]
+\begin{figure}[${1:htpb}]
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[
@@ -445,6 +403,18 @@ endsnippet
 context "math()"
 snippet cal "mathcal" wA
 \mathcal{$1}$0
+endsnippet
+
+snippet bb "mathbb" wA
+\mathbb{$1} $0
+endsnippet
+
+snippet bf "mathbf" wA
+\mathbf{$1} $0
+endsnippet
+
+snippet rm "mathrm" wA
+\mathrm{$1} $0
 endsnippet
 
 context "math()"
@@ -504,7 +474,7 @@ snippet !> "mapsto" iA
 endsnippet
 
 context "math()"
-snippet invs "inverse" iA
+snippet inv "^{-1}" iA
 ^{-1}
 endsnippet
 
@@ -526,7 +496,6 @@ snippet << "<<" iA
 \ll
 endsnippet
 
-
 snippet ~~ "~" iA
 \sim 
 endsnippet
@@ -536,38 +505,35 @@ snippet set "set" wA
 \\{$1\\} $0
 endsnippet
 
-
 context "math()"
 snippet cc "subset" Ai
 \subset$1 $0 
 endsnippet
 
-snippet !inn "not in " iA
+snippet notin "not in " iA
 \not\in 
 endsnippet
 
+priority 10
 context "math()"
 snippet inn "in " iA
 \in 
 endsnippet
 
-snippet NN "n" iA
-\mathbb N
-endsnippet
-
-snippet nn "cap" iA
+context "math()"
+snippet cap "cap" iA
 \cap 
 endsnippet
 
-snippet uu "cup" iA
+snippet cup "cup" iA
 \cup 
 endsnippet
 
-snippet Uu "bigcup" iA
+snippet bigcup "bigcup" iA
 \bigcup_{${1:i \in ${2: I}}} $0
 endsnippet
 
-snippet Nn "bigcap" iA
+snippet bigcap "bigcap" iA
 \bigcap_{${1:i \in ${2: I}}} $0
 endsnippet
 
@@ -587,16 +553,8 @@ snippet ZZ "Z" iA
 \mathbb Z
 endsnippet
 
-snippet bb "mathbb" wA
-\mathbb{$1} $0
-endsnippet
-
-snippet bf "mathbf" wA
-\mathbf{$1} $0
-endsnippet
-
-snippet rm "mathrm" wA
-\mathrm{$1} $0
+snippet NN "n" iA
+\mathbb N
 endsnippet
 
 snippet ang "angle" wA
@@ -615,7 +573,6 @@ snippet <> "hokje" iA
 \diamond 
 endsnippet
 
-
 context "math()"
 snippet '(?<!i)sts' "text subscript" irA
 _\text{$1} $0
@@ -633,8 +590,9 @@ snippet cases "cases" wA
 \end{cases}
 endsnippet
 
-snippet SI "SI" iA
-\SI{$1}{$2}
+context "math()"
+snippet fun "function" iA
+${1:f} : $2 \mathbb R \to \mathbb R: $0
 endsnippet
 
 snippet bigfun "Big function" iA
@@ -671,10 +629,5 @@ context "math()"
 snippet "([a-zA-Z])hat" "hat" riA
 \hat{`!p snip.rv=match.group(1)`}
 endsnippet
-
-snippet letw "let omega" iA
-Let $\Omega \subset \C$ be open.
-endsnippet
-
 
 # vim:ft=snippets
