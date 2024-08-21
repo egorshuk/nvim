@@ -36,6 +36,17 @@ snippet template "Basic template" b
 	footnotesep = 5mm
 ]{geometry}
 
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\newcommand{\incfig}[2][1]{
+	\def\svgwidth{#1\columnwidth}
+	\import{./figures/#2.pdf_tex}
+}
+
+\pdfsuppresswaningpagegroup=1
+
 \begin{document}
 	$0
 \end{document}
